@@ -2,18 +2,84 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>!repeat man!</title>
   </head>
   <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
-
-    <script>
+    <h2> repeat part of the song "Love the way you lie" to prictise rap myself </h2>
+    usage: <br/>
+    press "add AB" button on the begin point<br/>
+    press "add AB" button on the end point<br/>
+    then you can listen from the A point to B point in loop
+    <br/>
+    <audio id="myAudio" controls="controls" autoplay="autoplay" preload="auto" >
+     <source src="sample.mp3" type="audio/mpeg">
+    </audio>
+        <br/>
+        <button onClick="addAB()">add AB </button>
+        <br/>
+        control pannel
+        
+        <button onClick="addA()">add A</button>
+        <button onClick="addB()">add B</button>
+        <button onClick="clearAB()">clear</button>
+       first Part: {A: 25.136159, B: 70.386201}
+        <script>
       // You can also require other files to run in this process
       require('./renderer.js')
-    </script>
+var AB = {};
+var f = null;
+var ad = document.getElementById("myAudio");
+var interval = null;
+var isLoop = true;
+ad.addEventListener("play" , function(e,t,b){
+interval = setInterval(playAB, 50);
+    }, true);
+
+function setAB(A,B) {
+AB.A = A
+AB.B = B
+ad.currentTime = A;
+}
+setAB(25.136159, 70.386201);
+
+ad.addEventListener("stop" , function(e,t,b){clearInterval(interval);}, true);
+function playAB() {
+  if (typeof AB.A != 'undefined' &&typeof AB.B != 'undefined'  &&  AB.A && AB.B) {
+ var time = ad.currentTime 
+      if (time >= AB.B) {
+        if (isLoop) {
+          ad.currentTime = AB.A
+        } else {
+          ad.pause();
+        }
+      }
+  }
+}
+function addA(){
+AB.A = ad.currentTime;
+}
+function addB(){
+AB.B = ad.currentTime;
+}
+function clearAB() {
+    AB = {};
+}
+function loop() {
+   loop = !loop;
+}
+
+function addAB(){
+    console.table( AB);
+  if (!AB.A) {
+    AB.A = ad.currentTime;
+  }
+    else if (!AB.B) {
+      AB.B = ad.currentTime;
+  } else {
+     AB.A = null;
+     AB.B = null;
+  }
+}
+</script>
   </body>
 </html>
